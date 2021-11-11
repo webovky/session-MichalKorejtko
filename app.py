@@ -1,7 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
-app.secret_key = b'\xe3\x84t\x8b\x02\x1c\xfb\x82PH\x19\xe8\x98\x05\x90\xa8\xc83\xf1\xe2\xf4v\xfe\xf0'b'\xe3\x84t\x8b\x02\x1c\xfb\x82PH\x19\xe8\x98\x05\x90\xa8\xc83\xf1\xe2\xf4v\xfe\xf0'
+""" secret_key se generuje pomoc os.urandom(počet znaku davej 24)
+    ale obecně je to prostě velké náhodné číslo
+    proměnnou secret_key nikdy nesdílím v depozitáři tak jako teď
+"""
+
+app.secret_key = b'os.urandom(24)' 
 
 
 @app.route("/")
@@ -46,3 +51,11 @@ def banany(parametr):
 @app.route("/kvetak/")
 def kvetak():
     return render_template("kvetak.html.j2")
+
+@app.route("/Login/", methods=["GET"])
+def login():
+    return render_template("login.html.j2")
+
+@app.route("/Login/", methods=["POST"])
+def login_post():
+    return render_template("login.html.j2")
