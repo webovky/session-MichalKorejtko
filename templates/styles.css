@@ -1,0 +1,18 @@
+h1{
+    color:aqua
+}
+p{
+    color: blueviolet;
+}
+
+.message{
+    color: chocolate;
+}
+
+.pass{
+    color: green;
+}
+
+.err{
+    color: red;
+}
