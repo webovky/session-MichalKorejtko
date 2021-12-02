@@ -16,7 +16,6 @@ def index():
 
 @app.route("/abc/", methods=["GET"])
 def abc():
-    session['user'] = 'karel'
     try:
         x = request.args.get("x") 
         y = request.args.get("y")
@@ -50,14 +49,18 @@ def banany(parametr):
 
 @app.route("/kvetak/")
 def kvetak():
-    return render_template("kvetak.html.j2")
+    if "user" in session: 
+        return render_template("kvetak.html.j2")
+    else:
+        flash(f"Pro zobrazení této stránky ({request.path}) je nutné se přihlásit!", "err")
+        return redirect(url_for("login", next=request.path))
 
 @app.route("/Login/", methods=["GET"])
 def login():
     if request.method== "GET":
         login=request.args.get("login")
         passwd= request.args.get("password")
-        print(name, passwd)
+        print(login, passwd)
     return render_template("login.html.j2")
     
 
@@ -65,10 +68,22 @@ def login():
 def login_post():
     login= request.form.get("login")
     passwd= request.form.get("password")
-    print(login, password)
+    print(login, passwd)
     if login =="mici36" and passwd =="1234":
         session["user"]=login
         flash("úspěšně jses přihlasil", "pass")
+        next= request.args.get("next")
+        if next:
+            return redirect(next)
     else:
         flash("neplatné přihlašovací údaje", "err")
-    return redirect(url_for("login.html.j2"))
+    if next:
+        return redirect(url_for("login",next=next))
+    else:
+        return redirect(url_for("login"))
+
+@app.route("/Logout/")
+def logout():
+    session.pop("user", None)
+    flash("právě jsi se odhlásil", "pass")
+    return redirect (url_for("login"))

@@ -10,7 +10,9 @@
 </head>
 
 <body>
+<p>
  <h1>Ahoj</h1>
+</p>
 
 <ul>
     <li><a href="{{ url_for('index') }}">HOme</a></li>
@@ -20,9 +22,20 @@
     <li><a href="{{ url_for('login') }}">Login</a></li>
 </ul>
 
-{%for category, message in get_flashead_messages(with_categories=true) %}
+<p class="login"></p>
+{% if "user" in session %}
+Jsi přihlášen jako <strong>{{session.get("user")}}</strong>.
+<a href="{{url_for("logout") }}">Odhlásit</a>
+
+{% else %}
+Makej se příhlásit ty bramboro.
+<a href="{{url_for("logout") }}">Přihlásit</a>
+
+{% endif %}
+
+{%for category, message in get_flashed_messages(with_categories=true) %}
 <p class="message {{category}}">{{message}}</p>
-{% end for %}
+{% endfor %}
 
 
 {% block obsah %}
